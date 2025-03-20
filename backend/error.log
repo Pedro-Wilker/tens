@@ -1,0 +1,45 @@
+Erro ao conectar ao Prisma: Can't reach database server at `localhost`:`5432`
+
+Please make sure your database server is running at `localhost`:`5432`. em 2025-03-09T16:12:03.448Z
+Erro ao conectar ao Prisma: [1;91merror[0m: [1mError validating datasource `db`: the URL must start with the protocol `postgresql://` or `postgres://`.[0m
+  [1;94m-->[0m  [4mschema.prisma:3[0m
+[1;94m   | [0m
+[1;94m 2 | [0m  provider = "postgresql"
+[1;94m 3 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1 em 2025-03-09T16:12:57.437Z
+Erro ao conectar ao Prisma: [1;91merror[0m: [1mError validating datasource `db`: the URL must start with the protocol `postgresql://` or `postgres://`.[0m
+  [1;94m-->[0m  [4mschema.prisma:3[0m
+[1;94m   | [0m
+[1;94m 2 | [0m  provider = "postgresql"
+[1;94m 3 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1 em 2025-03-09T16:14:02.553Z
+Erro ao conectar ao Prisma: [1;91merror[0m: [1mError validating datasource `db`: the URL must start with the protocol `postgresql://` or `postgres://`.[0m
+  [1;94m-->[0m  [4mschema.prisma:3[0m
+[1;94m   | [0m
+[1;94m 2 | [0m  provider = "postgresql"
+[1;94m 3 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1 em 2025-03-09T16:24:32.946Z
+Erro ao conectar ao Prisma: [1;91merror[0m: [1mError validating datasource `db`: the URL must start with the protocol `postgresql://` or `postgres://`.[0m
+  [1;94m-->[0m  [4mschema.prisma:3[0m
+[1;94m   | [0m
+[1;94m 2 | [0m  provider = "postgresql"
+[1;94m 3 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1 em 2025-03-09T17:59:38.754Z
+Erro ao conectar ao Prisma: [1;91merror[0m: [1mError validating datasource `db`: the URL must start with the protocol `mysql://`.[0m
+  [1;94m-->[0m  [4mschema.prisma:3[0m
+[1;94m   | [0m
+[1;94m 2 | [0m  provider = "mysql"
+[1;94m 3 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1 em 2025-03-15T21:29:03.499Z
+Erro ao iniciar o servidor: ENOENT: no such file or directory, open 'C:\home5\tenso3105817\ssl\privkey.pem' em 2025-03-17T19:39:01.819Z
+Erro ao iniciar o servidor: ENOENT: no such file or directory, open 'C:\home5\tenso3105817\ssl\privkey.pem' em 2025-03-20T18:07:23.356Z

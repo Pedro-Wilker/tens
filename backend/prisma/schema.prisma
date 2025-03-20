@@ -1,0 +1,135 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+model User {
+  id           Int          @id @default(autoincrement())
+  name         String
+  email        String       @unique
+  number       String       @unique
+  passwordHash String
+  role         Role         @default(CLIENT)
+  analfabeto   Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  comments     Comment[]
+  ratings      Rating[]
+  services     Service[]
+  subcomments  Subcomment[]
+
+  @@map("users")
+}
+
+model Category {
+  id            Int           @id @default(autoincrement())
+  name          String        @unique
+  imageUrl      String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  subcategories Subcategory[]
+
+  @@map("categories")
+}
+
+model Subcategory {
+  id         Int       @id @default(autoincrement())
+  name       String
+  categoryId Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  services   Service[]
+  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([categoryId], map: "subcategories_categoryId_fkey")
+  @@map("subcategories")
+}
+
+model Service {
+  id             Int             @id @default(autoincrement())
+  providerId     Int
+  subcategoryId  Int
+  name           String
+  description    String?
+  price          Decimal?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  comments       Comment[]
+  ratings        Rating[]
+  serviceDetails ServiceDetail[]
+  provider       User            @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  subcategory    Subcategory     @relation(fields: [subcategoryId], references: [id], onDelete: Cascade)
+
+  @@index([providerId], map: "services_providerId_fkey")
+  @@index([subcategoryId], map: "services_subcategoryId_fkey")
+  @@map("services")
+}
+
+model ServiceDetail {
+  id          Int      @id @default(autoincrement())
+  serviceId   Int
+  photoUrl    String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  service     Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@index([serviceId], map: "service_details_serviceId_fkey")
+  @@map("service_details")
+}
+
+model Comment {
+  id          Int          @id @default(autoincrement())
+  serviceId   Int
+  userId      Int
+  text        String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  service     Service      @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subcomments Subcomment[]
+
+  @@index([serviceId], map: "comments_serviceId_fkey")
+  @@index([userId], map: "comments_userId_fkey")
+  @@map("comments")
+}
+
+model Subcomment {
+  id        Int      @id @default(autoincrement())
+  commentId Int
+  userId    Int
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([commentId], map: "subcomments_commentId_fkey")
+  @@index([userId], map: "subcomments_userId_fkey")
+  @@map("subcomments")
+}
+
+model Rating {
+  id        Int      @id @default(autoincrement())
+  serviceId Int
+  userId    Int
+  rating    Int
+  createdAt DateTime @default(now())
+  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([serviceId], map: "ratings_serviceId_fkey")
+  @@index([userId], map: "ratings_userId_fkey")
+  @@map("ratings")
+}
+
+enum Role {
+  PROVIDER
+  CLIENT
+  ADMIN
+  SUPPORT
+  PROVIDERAWAIT
+}
