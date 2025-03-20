@@ -1,0 +1,400 @@
+.dashboardContainer {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 20px;
+
+    @media (max-width: 768px) {
+        padding: 10px;
+    }
+}
+
+.usersSection,
+.createUserSection {
+    margin-bottom: 40px;
+}
+
+.usersContainer,
+.createUserContainer {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.usersTitle,
+.createUserTitle {
+    font-size: 24px;
+    color: #35047f;
+    margin-bottom: 15px;
+    font-family: var(--font-poppins);
+    text-align: center;
+
+    @media (max-width: 768px) {
+        font-size: 20px;
+    }
+}
+
+.usersLoading {
+    font-size: 16px;
+    color: #666;
+    text-align: center;
+    font-family: var(--font-poppins);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.usersSubtitle,
+.createUserSubtitle {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+    font-family: var(--font-poppins);
+    text-align: center;
+
+    @media (max-width: 768px) {
+        font-size: 14px;
+    }
+}
+
+.usersGrid,
+.createUserBox {
+    display: grid;
+    gap: 20px;
+
+    @media (max-width: 768px) {
+        gap: 15px;
+    }
+}
+
+.usersGrid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.userCard {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .userIcon {
+        margin-bottom: 10px;
+    }
+
+    .userCardTitle {
+        font-size: 18px;
+        color: #35047f;
+        font-family: var(--font-poppins);
+        margin: 0;
+
+        @media (max-width: 768px) {
+            font-size: 16px;
+        }
+    }
+}
+
+.createUserBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 250px;
+    margin: 0 auto;
+
+    .userIcon {
+        margin-bottom: 10px;
+    }
+
+    .createUserButton {
+        background-color: #35047f;
+        color: #ffde00;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        font-family: var(--font-poppins);
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: #927f06;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+    }
+}
+
+.usersLoading {
+    font-size: 16px;
+    color: #666;
+    text-align: center;
+    font-family: var(--font-poppins);
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    h2 {
+        font-size: 24px;
+        color: #35047f;
+        margin-bottom: 15px;
+        font-family: var(--font-poppins);
+    }
+
+    p {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 20px;
+        font-family: var(--font-poppins);
+    }
+
+    .modalButtons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+
+        button {
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            font-family: var(--font-poppins);
+
+            @media (max-width: 768px) {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+
+        .confirmButton {
+            background-color: #35047f;
+            color: #ffde00;
+            border: none;
+
+            &:hover {
+                background-color: #927f06;
+                color: white;
+            }
+        }
+
+        .cancelButton {
+            background-color: #ccc;
+            color: #333;
+            border: none;
+
+            &:hover {
+                background-color: #999;
+                color: white;
+            }
+        }
+    }
+}
+
+.createCategorySection {
+    padding: 20px 0;
+}
+
+.createCategoryContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.createCategoryTitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #35047f;
+}
+
+.createCategoryBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+}
+
+.createCategoryButton {
+    padding: 10px 20px;
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+
+    &:hover {
+        background-color: #005bb5;
+    }
+}
+
+.listSection {
+    margin-top: 20px;
+
+    .listContainer {
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        .listTitle {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .listGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+
+            .listItem {
+                padding: 15px;
+                background: #f9f9f9;
+                border-radius: 4px;
+                border: 1px solid #ddd;
+                text-align: center;
+
+                &:hover {
+                    background: #f0f0f0;
+                    cursor: pointer;
+                }
+            }
+
+            .listItemTitle {
+                font-size: 16px;
+                font-weight: bold;
+                color: #333;
+            }
+
+            .listLoading {
+                text-align: center;
+                color: #666;
+            }
+        }
+    }
+}
+
+.error {
+    color: red;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 10px;
+    font-family: var(--font-poppins);
+}
+
+.user-details-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.error {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.user-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.user-email,
+.user-number,
+.user-role,
+.user-created-at,
+.user-updated-at {
+    margin: 5px 0;
+}
+
+.services-section,
+.comments-section,
+.ratings-section {
+    margin-top: 20px;
+}
+
+.service-card,
+.comment-card,
+.rating-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.service-details,
+.subcomments {
+    margin-left: 20px;
+}
+
+.detail-item,
+.subcomment-item {
+    margin: 5px 0;
+}
+
+.delete-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+}

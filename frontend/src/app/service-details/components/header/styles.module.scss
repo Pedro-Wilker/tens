@@ -1,0 +1,380 @@
+$minimal-screen: 320px;
+$small-screen: 480px;
+$medium-screen: 768px;
+$large-screen: 1024px;
+$x-large-screen: 1280px;
+
+.headerContainer {
+  background-color: #35047f;
+  height: 5rem;
+  width: 100%;
+  position: relative;
+}
+
+.headerContent {
+  max-width: 1280px;
+  height: 5rem;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-poppins);
+
+  .logo {
+    width: 130px;
+    height: 130px;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+
+    a {
+      color: #ffde00;
+      text-decoration: none;
+      transition: color 0.6s;
+      font-size: 28px;
+
+      &:hover {
+        color: #927f06;
+      }
+    }
+
+    button {
+      border: 0;
+      background: transparent;
+      margin-left: 16px;
+      transition: transform 0.4s;
+
+      &:hover {
+        transform: scale(1.2);
+        cursor: pointer;
+      }
+
+      svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    .profileLink {
+      display: flex;
+      align-items: center;
+
+      .profileBox {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255, 222, 0, 0.2);
+        border-radius: 8px;
+        transition: background-color 0.3s;
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+
+        &:hover {
+          background-color: rgba(255, 222, 0, 0.4);
+        }
+      }
+    }
+  }
+
+  .headerActions {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+
+    .login {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffde00;
+      font-size: 28px;
+      text-decoration: none;
+      transition: color 0.6s;
+
+      &:hover {
+        color: #927f06;
+      }
+    }
+
+    .hamburger {
+      display: none;
+      border: 0;
+      background: transparent;
+      transition: transform 0.4s;
+
+      &:hover {
+        transform: scale(1.2);
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+@media (min-width: $x-large-screen) {
+  .headerContainer {
+    height: 7rem;
+  }
+
+  .headerContent {
+    max-width: 1440px;
+    height: 7rem;
+    padding: 0 32px;
+
+    .logo {
+      width: 160px;
+      height: 160px;
+    }
+
+    .nav {
+      gap: 60px;
+
+      a {
+        font-size: 28px;
+      }
+    }
+
+    .headerActions {
+      gap: 60px;
+
+      .login {
+        font-size: 28px;
+      }
+    }
+  }
+}
+
+@media (max-width: $medium-screen) {
+  .headerContainer {
+    height: 4rem;
+  }
+
+  .headerContent {
+    height: 4rem;
+
+    .logo {
+      width: 100px;
+      height: 100px;
+    }
+
+    .nav {
+      display: none;
+      position: absolute;
+      top: 4rem;
+      left: 0;
+      right: 0;
+      background-color: #35047f;
+      flex-direction: column;
+      gap: 20px;
+      padding: 20px;
+
+      &.navOpen {
+        display: flex;
+      }
+
+      a {
+        font-size: 20px;
+      }
+
+      .profileBox {
+        width: 32px;
+        height: 32px;
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+
+    .headerActions {
+      gap: 20px;
+
+      .login {
+        font-size: 20px;
+      }
+
+      .hamburger {
+        display: block;
+      }
+    }
+  }
+}
+
+@media (max-width: $small-screen) {
+  .headerContent {
+    .nav {
+      gap: 10px;
+
+      a {
+        font-size: 16px;
+      }
+
+      .profileBox {
+        width: 28px;
+        height: 28px;
+
+        svg {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+
+    .headerActions {
+      .login {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: var(--font-poppins);
+
+  h2 {
+    font-size: 24px;
+    color: #35047f;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .servicesList {
+    max-height: 400px;
+    overflow-y: auto;
+
+    .serviceItem {
+      margin-bottom: 15px;
+      padding: 10px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+
+      h3 {
+        font-size: 18px;
+        color: #35047f;
+        margin-bottom: 5px;
+      }
+
+      p {
+        font-size: 14px;
+        color: #666;
+      }
+    }
+  }
+
+  .noServices {
+    text-align: center;
+
+    p {
+      margin-bottom: 20px;
+    }
+  }
+
+  .successMessage {
+    text-align: center;
+    color: #35047f;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .modalButtons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+
+    button {
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .confirmButton {
+      background-color: #35047f;
+      color: #ffde00;
+
+      &:hover {
+        background-color: #927f06;
+        color: white;
+      }
+    }
+
+    .cancelButton {
+      background-color: #ffde00;
+      color: #35047f;
+
+      &:hover {
+        background-color: #8236f5;
+        color: white;
+      }
+    }
+  }
+
+  .createServiceButton {
+    display: flex;
+    justify-content: center;
+    background-color: #35047f;
+    color: #ffde00;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+
+    &:hover {
+      background-color: #927f06;
+      color: white;
+    }
+  }
+
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: $medium-screen) {
+  .modalContent {
+    .modalButtons {
+      button {
+        padding: 8px 16px;
+        font-size: 14px;
+      }
+    }
+  }
+}

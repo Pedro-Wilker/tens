@@ -1,0 +1,25 @@
+.criaContaLink {
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #ffde00;
+    border-radius: 65px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    &:hover {
+        background-color: darken(#ffde00, 10%);
+    }
+}
+
+.criaConta {
+    position: relative;
+    letter-spacing: 0.3em;
+    color: #35047F;
+    font-size: 26px;
+
+    @media (max-width: 768px) {
+        font-size: 4vw;
+    }
+}

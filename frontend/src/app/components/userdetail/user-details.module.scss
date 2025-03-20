@@ -1,0 +1,240 @@
+.userDetailsSection {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  .loading {
+    color: #333;
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .error {
+    color: red;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .userInfo {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+    .userTitle {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: #333;
+    }
+  
+    .infoBox {
+      p {
+        margin: 10px 0;
+        strong {
+          color: #555;
+        }
+      }
+    }
+  
+    .actionButtons {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+  
+      .editButton,
+      .deleteButton {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: bold;
+  
+        svg {
+          margin-right: 5px;
+        }
+  
+        &:hover {
+          opacity: 0.9;
+        }
+      }
+  
+      .editButton {
+        background: #007bff;
+        color: white;
+      }
+  
+      .deleteButton {
+        background: #dc3545;
+        color: white;
+      }
+    }
+  }
+  
+  .servicesSection,
+  .commentsSection,
+  .ratingsSection {
+    margin-bottom: 20px;
+  
+    .sectionTitle {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+  
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+  }
+  
+  .servicesList {
+    .serviceItem {
+      background: #f1f1f1;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+  
+      p {
+        margin: 5px 0;
+      }
+  
+      .subsectionTitle {
+        font-size: 16px;
+        margin-top: 10px;
+        color: #555;
+      }
+  
+      .detailsList,
+      .ratingsList {
+        margin-left: 20px;
+  
+        .detailItem,
+        .ratingItem {
+          padding: 5px 0;
+        }
+      }
+    }
+  }
+  
+  .commentsList {
+    .commentItem {
+      background: #f1f1f1;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+  
+      p {
+        margin: 5px 0;
+      }
+  
+      .subsectionTitle {
+        font-size: 16px;
+        margin-top: 10px;
+        color: #555;
+      }
+  
+      .subcommentsList {
+        margin-left: 20px;
+  
+        .subcommentItem {
+          padding: 5px 0;
+        }
+      }
+    }
+  }
+  
+  .ratingsList {
+    .ratingItem {
+      background: #f1f1f1;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+  
+      p {
+        margin: 5px 0;
+      }
+    }
+  }
+  
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+  
+    .modalTitle {
+      margin-bottom: 20px;
+      color: #333;
+    }
+  
+    p {
+      margin-bottom: 15px;
+      color: #555;
+    }
+  
+    .formGroup {
+      margin-bottom: 15px;
+  
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+      }
+  
+      .inputField {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+    }
+  
+    .modalButtons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+  
+      .submitButton,
+      .confirmButton,
+      .cancelButton {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+  
+      .submitButton,
+      .confirmButton {
+        background: #007bff;
+        color: white;
+      }
+  
+      .cancelButton {
+        background: #ccc;
+        color: #333;
+      }
+    }
+  }

@@ -1,0 +1,450 @@
+$mininal-screen: 320px;
+$small-screen: 480px;
+$medium-screen: 768px;
+$large-screen: 1024px;
+$x-large-screen: 1280px;
+
+.header {
+  background: linear-gradient(135deg, #35047f, #290264);
+  height: 5rem;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  @media (max-width: $medium-screen) {
+    height: 4rem;
+  }
+}
+
+.headerContent {
+  max-width: 1280px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .logo {
+    width: 140px;
+    height: 140px;
+    transition: transform 0.3s;
+
+    @media (min-width: $x-large-screen) {
+      width: 180px;
+      height: 180px;
+    }
+
+    @media (max-width: $medium-screen) {
+      width: 100px;
+      height: 100px;
+    }
+
+    @media (max-width: $small-screen) {
+      width: 80px;
+      height: 80px;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  .headerActions {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+
+    @media (max-width: $medium-screen) {
+      gap: 20px;
+    }
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+
+    @media (max-width: $medium-screen) {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: #35047f;
+      padding: 20px;
+      border-radius: 0 0 0 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+      &.navOpen {
+        display: flex;
+      }
+
+      a {
+        color: #ffde00;
+        font-size: 1.1rem;
+        text-decoration: none;
+        padding: 10px 0;
+        transition: color 0.3s;
+
+        &:hover {
+          color: #ff51d6;
+        }
+      }
+    }
+
+    a {
+      color: #ffde00;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.3s;
+
+      &:hover {
+        color: #ff51d6;
+      }
+
+      @media (max-width: $small-screen) {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .login {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffde00;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s;
+
+    &:hover {
+      color: #ff51d6;
+    }
+
+    @media (max-width: $medium-screen) {
+      font-size: 1rem;
+    }
+
+    .userIcon {
+      width: 24px;
+      height: 24px;
+      transition: color 0.3s;
+
+      &:hover {
+        color: #ff51d6;
+      }
+    }
+  }
+
+  .hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ffde00;
+    padding: 10px;
+
+    @media (max-width: $medium-screen) {
+      display: block;
+    }
+
+    .menuIcon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f5f5f5;
+}
+
+.platformSummary {
+  width: 100%;
+  background: linear-gradient(135deg, #35047f, #290264);
+  color: #ffde00;
+  padding: 100px 20px;
+  text-align: left;
+
+  @media (max-width: $medium-screen) {
+    padding: 50px 10px;
+  }
+
+  @media (max-width: $small-screen) {
+    padding: 30px 8px;
+  }
+
+  .platformSummaryContainer {
+    width: 100%;
+    margin: 7em auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 0 0 15em;
+
+    @media (min-width: $x-large-screen) {
+      max-width: 1600px;
+      margin: 6em auto;
+    }
+
+    @media (max-width: $large-screen) {
+      padding: 0 0 0 10em;
+    }
+
+    @media (max-width: $medium-screen) {
+      padding: 0 15px;
+      margin: 4em auto;
+    }
+
+    @media (max-width: $small-screen) {
+      padding: 0 10px;
+      margin: 3em auto;
+    }
+
+    .platformSummaryTitle {
+      font-size: 6rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      font-family: "Poppins", sans-serif;
+      color: #cecbcbf1;
+
+      span {
+        font-size: 6rem;
+        font-weight: 800;
+
+        @media (min-width: $x-large-screen) {
+          font-size: 6rem;
+        }
+
+        @media (max-width: $large-screen) {
+          font-size: 4rem;
+        }
+
+        @media (max-width: $medium-screen) {
+          font-size: 3rem;
+        }
+
+        @media (max-width: $small-screen) {
+          font-size: 2rem;
+        }
+
+        @media (max-width: $mininal-screen) {
+          font-size: 1.5rem;
+        }
+      }
+
+      b {
+        font-size: 3rem;
+        font-weight: 600;
+
+        @media (min-width: $x-large-screen) {
+          font-size: 3rem;
+        }
+
+        @media (max-width: $large-screen) {
+          font-size: 2rem;
+        }
+
+        @media (max-width: $medium-screen) {
+          font-size: 1.5rem;
+        }
+
+        @media (max-width: $small-screen) {
+          font-size: 1rem;
+        }
+
+        @media (max-width: $mininal-screen) {
+          font-size: 0.8rem;
+        }
+      }
+
+      @media (min-width: $x-large-screen) {
+        font-size: 6rem;
+      }
+
+      @media (max-width: $large-screen) {
+        font-size: 4rem;
+      }
+
+      @media (max-width: $medium-screen) {
+        font-size: 3rem;
+      }
+
+      @media (max-width: $small-screen) {
+        font-size: 2rem;
+      }
+
+      @media (max-width: $mininal-screen) {
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  .platformSummaryTextContainer {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 0 21em;
+
+    @media (max-width: $large-screen) {
+      padding: 0 0 0 16em;
+      width: 90%;
+    }
+
+    @media (max-width: $medium-screen) {
+      padding: 0 15px;
+      width: 100%;
+    }
+
+    @media (max-width: $small-screen) {
+      padding: 0 10px;
+    }
+
+    .platformSummarySubtitle {
+      font-size: 1.2rem;
+      line-height: 1.5;
+      margin-bottom: 32px;
+      font-family: "Poppins", sans-serif;
+      text-align: left;
+      color: #ffde00;
+
+      @media (min-width: $x-large-screen) {
+        font-size: 1.7rem;
+      }
+
+      @media (max-width: $large-screen) {
+        font-size: 1rem;
+      }
+
+      @media (max-width: $medium-screen) {
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: $small-screen) {
+        font-size: 0.8rem;
+      }
+
+      @media (max-width: $mininal-screen) {
+        font-size: 0.7rem;
+      }
+
+      p {
+        margin: 0;
+      }
+    }
+  }
+}
+
+.missionVision {
+  width: 100%;
+  padding: 80px 20px;
+  background: #fff;
+
+  .missionVisionContent {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .missionVisionGrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+
+      @media (max-width: $medium-screen) {
+        grid-template-columns: 1fr;
+      }
+
+      .missionVisionCard {
+        background: #f9f9f9;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+
+        .missionVisionTitle {
+          font-size: 2rem;
+          font-weight: 700;
+          color: #35047f;
+          margin-bottom: 15px;
+          font-family: "Poppins", sans-serif;
+
+          @media (max-width: $medium-screen) {
+            font-size: 1.5rem;
+          }
+        }
+
+        .missionVisionText {
+          font-size: 1.1rem;
+          color: #666;
+          line-height: 1.6;
+          font-family: "Poppins", sans-serif;
+
+          @media (max-width: $medium-screen) {
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+.values {
+  width: 100%;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #35047f, #290264);
+  color: #ffde00;
+
+  .valuesTitle {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 40px;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .valuesGrid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+
+    .valuesCard {
+      background: #290264;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      transition: transform 0.3s;
+
+      &:hover {
+        transform: translateY(-10px);
+      }
+
+      svg {
+        margin-bottom: 15px;
+      }
+
+      .valuesCardTitle {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .valuesCardText {
+        font-size: 1rem;
+        line-height: 1.5;
+        font-family: "Poppins", sans-serif;
+      }
+    }
+  }
+}

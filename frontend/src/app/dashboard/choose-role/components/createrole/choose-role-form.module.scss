@@ -1,0 +1,161 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  
+    @media (max-width: 768px) {
+      padding: 10px;
+    }
+  }
+  
+  .roleSection {
+    text-align: center;
+    padding: 40px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .roleTitle {
+    font-size: 24px;
+    color: #35047f;
+    margin-bottom: 20px;
+    font-family: var(--font-poppins);
+  
+    @media (max-width: 768px) {
+      font-size: 20px;
+    }
+  }
+  
+  .roleButtons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  
+    @media (max-width: 768px) {
+      gap: 10px;
+      flex-direction: column;
+    }
+  }
+  
+  .roleButton {
+    background-color: #35047f;
+    color: #ffde00;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: var(--font-poppins);
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #927f06;
+      color: white;
+    }
+  
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  
+    @media (max-width: 768px) {
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+  }
+  
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+    h2 {
+      font-size: 24px;
+      color: #35047f;
+      margin-bottom: 15px;
+      font-family: var(--font-poppins);
+    }
+  
+    p {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 20px;
+      font-family: var(--font-poppins);
+    }
+  
+    .modalButtons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+  
+      button {
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        font-family: var(--font-poppins);
+  
+        @media (max-width: 768px) {
+          padding: 8px 16px;
+          font-size: 14px;
+        }
+      }
+  
+      .confirmButton {
+        background-color: #35047f;
+        color: #ffde00;
+        border: none;
+  
+        &:hover {
+          background-color: #927f06;
+          color: white;
+        }
+      }
+  
+      .cancelButton {
+        background-color: #ccc;
+        color: #333;
+        border: none;
+  
+        &:hover {
+          background-color: #999;
+          color: white;
+        }
+      }
+    }
+  }
+  
+  .error {
+    color: red;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 10px;
+    font-family: var(--font-poppins);
+  }
+  
+  .success {
+    color: #2ecc71;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 10px;
+    font-family: var(--font-poppins);
+  }

@@ -1,0 +1,239 @@
+.headerContainer {
+    background-color: #35047f;
+    height: 5rem;
+    width: 100%;
+  }
+  
+  .headerContent {
+    max-width: 1280px;
+    height: 5rem;
+    margin: 0 auto;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .logo {
+      width: 130px;
+      height: 130px;
+  
+      @media (min-width: 1280px) {
+        width: 160px;
+        height: 160px;
+      }
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 80px;
+  
+      a {
+        color: #ffde00;
+        text-decoration: none;
+        transition: color 0.6s;
+        font-size: 28px;
+  
+        &:hover {
+          color: #927f06;
+        }
+      }
+  
+      button {
+        border: 0;
+        background: transparent;
+        margin-left: 16px;
+        transition: transform 0.4s;
+  
+        &:hover {
+          transform: scale(1.2);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .headerContent {
+      max-width: 1440px;
+      height: 7rem;
+      padding: 0 32px;
+      a {
+        margin-bottom: 2rem;
+      }
+  
+      button {
+        margin-bottom: 1.5rem;
+      }
+    }
+  }
+  
+  @media (max-width: 1024px) {
+    .headerContent {
+      margin: 0;
+  
+      nav {
+        gap: 40px;
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .headerContent {
+      nav {
+        gap: 20px;
+  
+        a {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .headerContent {
+      nav {
+        gap: 10px;
+  
+        a {
+          font-size: 16px;
+        }
+      }
+  
+      form button {
+        svg {
+          width: 24px;
+          height: 24px;
+        }
+      }
+    }
+  }
+  
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+    h2 {
+      font-size: 24px;
+      color: #35047f;
+      margin-bottom: 20px;
+      font-family: var(--font-poppins);
+    }
+  
+    p {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 20px;
+      font-family: var(--font-poppins);
+    }
+  
+    .servicesList {
+      max-height: 400px;
+      overflow-y: auto;
+  
+      .serviceItem {
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+        h3 {
+          font-size: 18px;
+          color: #35047f;
+          margin-bottom: 5px;
+          font-family: var(--font-poppins);
+        }
+  
+        p {
+          font-size: 14px;
+          color: #666;
+          font-family: var(--font-poppins);
+        }
+      }
+    }
+  
+    .noServices {
+      text-align: center;
+  
+      p {
+        margin-bottom: 20px;
+      }
+    }
+  
+    .successMessage {
+      text-align: center;
+      color: #35047f;
+      font-size: 16px;
+      font-family: var(--font-poppins);
+      margin-bottom: 20px;
+    }
+  
+    .modalButtons,
+    .createServiceButton {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      background-color: #35047f;
+      color: #ffde00;
+      border: none;
+  
+      &:hover {
+        background-color: #927f06;
+        color: white;
+      }
+      button {
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        font-family: var(--font-poppins);
+  
+        @media (max-width: 768px) {
+          padding: 8px 16px;
+          font-size: 14px;
+        }
+      }
+  
+      .confirmButton,
+      .createServiceButton {
+        background-color: #35047f;
+        color: #ffde00;
+        border: none;
+  
+        &:hover {
+          background-color: #927f06;
+          color: white;
+        }
+      }
+    
+      .cancelButton{
+        background-color: #ffde00;
+        color: #35047f; 
+        border: none;
+  
+        &:hover {
+          background-color: #8236f5;
+          color: white;
+        }
+      }
+    }
+  }
+  
