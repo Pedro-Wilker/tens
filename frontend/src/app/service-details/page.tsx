@@ -82,13 +82,8 @@ const ServiceDetailPage: NextPage<{ searchParams: Promise<{ serviceId?: string }
 }) => {
   console.log("Iniciando execução do ServiceDetailPage...");
 
-  console.log("Resolvendo parâmetros da URL...");
   const resolvedSearchParams = await searchParams;
-  console.log("Parâmetros resolvidos:", resolvedSearchParams);
-
-  console.log("Validando serviceId...");
   const serviceIdString = resolvedSearchParams.serviceId;
-  console.log("serviceId como string:", serviceIdString);
 
   if (!serviceIdString) {
     console.error("Nenhum serviceId fornecido na URL.");
@@ -96,27 +91,36 @@ const ServiceDetailPage: NextPage<{ searchParams: Promise<{ serviceId?: string }
   }
 
   const serviceId = parseInt(serviceIdString, 10);
-  console.log("serviceId convertido para número:", serviceId);
-
   if (isNaN(serviceId) || serviceId <= 0) {
     console.error(`ID do serviço inválido: ${serviceIdString}`);
     return <div>ID do serviço inválido.</div>;
   }
 
-  console.log("Buscando token nos cookies...");
   const cookieStore = await cookies();
   const token = cookieStore.get("session")?.value;
-  console.log("Token encontrado:", token || "Nenhum token");
+  console.log("Depuração do token:", {
+    tokenExists: !!token,
+    tokenValue: token || "Nenhum token encontrado",
+    cookieStoreContent: cookieStore.getAll()
+  });
+
+  const apiConfig = {
+    headers: {
+      "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }) 
+    }
+  };
 
   let service: Service | null = null;
 
   try {
-    console.log(`Buscando serviço com ID ${serviceId} em https://tensoportunidades.com.br:8080/services/${serviceId}...`);
-    const serviceResponse = await api.get(`/services/${serviceId}`); 
+    console.log(`Iniciando requisição para https://tensoportunidades.com.br:8080/services/${serviceId}`);
+    const serviceResponse = await api.get(`/services/${serviceId}`, apiConfig);
 
-    console.log(`Serviço encontrado com sucesso em https://tensoportunidades.com.br:8080/services/${serviceId}:`, {
+    console.log("Resposta da API recebida:", {
       status: serviceResponse.status,
-      data: serviceResponse.data,
+      headers: serviceResponse.headers,
+      data: serviceResponse.data
     });
 
     const backendService = serviceResponse.data;
@@ -135,12 +139,11 @@ const ServiceDetailPage: NextPage<{ searchParams: Promise<{ serviceId?: string }
       serviceDetails: backendService.serviceDetails || [],
     };
   } catch (err: any) {
-    console.error(`Erro ao carregar dados do serviço em https://tensoportunidades.com.br:8080/services/${serviceId}:`, {
+    console.error(`Erro na requisição para https://tensoportunidades.com.br:8080/services/${serviceId}:`, {
       message: err.message,
-      response: err.response?.data,
       status: err.response?.status,
-      config: err.config,
-      stack: err.stack, 
+      responseData: err.response?.data,
+      requestConfig: apiConfig
     });
     return <div>Erro ao carregar o serviço. Tente novamente mais tarde.</div>;
   }
@@ -150,7 +153,12 @@ const ServiceDetailPage: NextPage<{ searchParams: Promise<{ serviceId?: string }
     return <div>Serviço não encontrado.</div>;
   }
 
-  console.log("Renderizando componente ServiceDetails com os dados do serviço...");
+  console.log("Renderizando ServiceDetails com dados:", {
+    serviceId: service.id,
+    serviceName: service.name,
+    hasToken: !!token
+  });
+
   return (
     <ServiceDetails
       initialService={service}

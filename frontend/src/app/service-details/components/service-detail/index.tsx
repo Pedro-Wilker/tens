@@ -8,6 +8,7 @@ import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
 import { MessageCircle, Pen, Trash2 } from "lucide-react";
 
+// Interfaces permanecem iguais
 interface Service {
   id: number;
   name: string;
@@ -138,9 +139,15 @@ export default function ServiceDetails({
 
   const fetchServiceDetails = useCallback(async (serviceId: number) => {
     console.log(`Iniciando fetchServiceDetails para serviceId: ${serviceId}`);
+    const apiConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+    };
     try {
-      console.log(`Enviando requisição para https://tensoportunidades.com.br:8080/services/${serviceId}...`);
-      const response = await api.get(`/services/${serviceId}`); 
+      console.log(`Enviando requisição GET para https://tensoportunidades.com.br:8080/services/${serviceId}`);
+      const response = await api.get(`/services/${serviceId}`, apiConfig);
       console.log(`Resposta recebida de https://tensoportunidades.com.br:8080/services/${serviceId}:`, {
         status: response.status,
         data: response.data,
@@ -160,11 +167,10 @@ export default function ServiceDetails({
         message: err.message,
         response: err.response?.data,
         status: err.response?.status,
-        stack: err.stack,
       });
       setError("Erro ao carregar detalhes do serviço. Tente novamente.");
     }
-  }, []);
+  }, [token]); // Dependência 'token' incluída
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -176,9 +182,16 @@ export default function ServiceDetails({
         return;
       }
 
+      const apiConfig = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
       try {
-        console.log("Enviando requisição para buscar dados do usuário em https://tensoportunidades.com.br:8080/detailuser...");
-        const response = await api.get("/detailuser"); 
+        console.log("Enviando requisição GET para https://tensoportunidades.com.br:8080/detailuser");
+        const response = await api.get("/detailuser", apiConfig);
         console.log("Usuário buscado com sucesso em https://tensoportunidades.com.br:8080/detailuser:", {
           status: response.status,
           data: response.data,
@@ -189,7 +202,6 @@ export default function ServiceDetails({
           message: error.message,
           response: error.response?.data,
           status: error.response?.status,
-          stack: error.stack,
         });
         setError("Erro ao carregar usuário. Verifique sua sessão.");
         setUser(null);
@@ -204,10 +216,8 @@ export default function ServiceDetails({
     if (initialService?.id) {
       console.log("Serviço inicial presente, buscando detalhes do serviço:", initialService.id);
       fetchServiceDetails(initialService.id);
-    } else {
-      console.log("Nenhum serviço inicial fornecido:", initialService);
     }
-  }, [initialService?.id, fetchServiceDetails, initialService, token]);
+  }, [initialService?.id, fetchServiceDetails, token]); // Dependências incluídas
 
   const handleRating = async (rating: number) => {
     console.log("Iniciando handleRating com rating:", rating);
@@ -223,28 +233,36 @@ export default function ServiceDetails({
       return;
     }
 
+    const apiConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     try {
       setLoading(true);
-      console.log("Enviando requisição para avaliar o serviço em https://tensoportunidades.com.br:8080/ratings...");
-      const response = await api.post("/ratings", { serviceId: service?.id, rating }); // withCredentials: true
+      console.log("Enviando requisição POST para https://tensoportunidades.com.br:8080/ratings");
+      const response = await api.post(
+        "/ratings",
+        { "serviceId": service?.id, "rating": rating },
+        apiConfig
+      );
       console.log("Avaliação enviada com sucesso para https://tensoportunidades.com.br:8080/ratings:", {
         status: response.status,
         data: response.data,
       });
       setUserRating(rating);
-      console.log("Rating do usuário definido:", rating);
       await fetchServiceDetails(service!.id);
     } catch (err: any) {
       console.error("Erro ao avaliar o serviço em https://tensoportunidades.com.br:8080/ratings:", {
         message: err.message,
         response: err.response?.data,
         status: err.response?.status,
-        stack: err.stack,
       });
       setError("Erro ao avaliar o serviço. Tente novamente.");
     } finally {
       setLoading(false);
-      console.log("Finalizando handleRating, loading definido como false.");
     }
   };
 
@@ -262,28 +280,36 @@ export default function ServiceDetails({
       return;
     }
 
+    const apiConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     try {
       setLoading(true);
-      console.log("Enviando comentário para https://tensoportunidades.com.br:8080/comments...");
-      const response = await api.post("/comments", { serviceId: service?.id, text: newComment, userId: user.id }); // withCredentials: true
+      console.log("Enviando requisição POST para https://tensoportunidades.com.br:8080/comments");
+      const response = await api.post(
+        "/comments",
+        { "serviceId": service?.id, "text": newComment, "userId": user.id },
+        apiConfig
+      );
       console.log("Comentário enviado com sucesso para https://tensoportunidades.com.br:8080/comments:", {
         status: response.status,
         data: response.data,
       });
       setNewComment("");
-      console.log("Campo de novo comentário limpo.");
       await fetchServiceDetails(service!.id);
     } catch (err: any) {
       console.error("Erro ao adicionar comentário em https://tensoportunidades.com.br:8080/comments:", {
         message: err.message,
         response: err.response?.data,
         status: err.response?.status,
-        stack: err.stack,
       });
       setError(`Erro ao adicionar comentário: ${err.response?.data?.error || err.message}`);
     } finally {
       setLoading(false);
-      console.log("Finalizando handleCommentSubmit, loading definido como false.");
     }
   };
 
@@ -302,28 +328,36 @@ export default function ServiceDetails({
       return;
     }
 
+    const apiConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     try {
       setLoading(true);
-      console.log(`Enviando subcomentário para https://tensoportunidades.com.br:8080/comments/${editingSubcomment.commentId}/subcomments...`);
-      const response = await api.post(`/comments/${editingSubcomment.commentId}/subcomments`, { text: editingSubcomment.text, userId: user.id }); // withCredentials: true
+      console.log(`Enviando requisição POST para https://tensoportunidades.com.br:8080/comments/${editingSubcomment.commentId}/subcomments`);
+      const response = await api.post(
+        `/comments/${editingSubcomment.commentId}/subcomments`,
+        { "text": editingSubcomment.text, "userId": user.id },
+        apiConfig
+      );
       console.log(`Subcomentário enviado com sucesso para https://tensoportunidades.com.br:8080/comments/${editingSubcomment.commentId}/subcomments:`, {
         status: response.status,
         data: response.data,
       });
       setEditingSubcomment((prev) => ({ ...prev, text: "" }));
-      console.log("Campo de subcomentário limpo.");
       await fetchServiceDetails(service!.id);
     } catch (err: any) {
       console.error(`Erro ao adicionar subcomentário em https://tensoportunidades.com.br:8080/comments/${editingSubcomment.commentId}/subcomments:`, {
         message: err.message,
         response: err.response?.data,
         status: err.response?.status,
-        stack: err.stack,
       });
       setError(`Erro ao adicionar subcomentário: ${err.response?.data?.error || err.message}`);
     } finally {
       setLoading(false);
-      console.log("Finalizando handleSubcommentSubmit, loading definido como false.");
     }
   };
 
@@ -341,7 +375,6 @@ export default function ServiceDetails({
     setFormData({ ...formData, name: comment.text });
     setEditingComment({ id: comment.id, text: comment.text, isSubcomment: false });
     setIsEditModalOpen(true);
-    console.log("Modal de edição aberto para comentário:", comment.id);
   };
 
   const handleDeleteComment = async (commentId: number) => {
@@ -352,12 +385,23 @@ export default function ServiceDetails({
       return;
     }
 
+    const apiConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     try {
       setLoading(true);
-      console.log(`Enviando requisição para deletar comentário em https://tensoportunidades.com.br:8080/comments/${commentId}...`);
-      const response = await api.delete(`/comments/${commentId}`, {
-        data: { userId: user?.id },
-      }); 
+      console.log(`Enviando requisição DELETE para https://tensoportunidades.com.br:8080/comments/${commentId}`);
+      const response = await api.delete(
+        `/comments/${commentId}`,
+        {
+          ...apiConfig,
+          data: { "userId": user?.id },
+        }
+      );
       console.log(`Comentário deletado com sucesso em https://tensoportunidades.com.br:8080/comments/${commentId}:`, {
         status: response.status,
       });
@@ -367,12 +411,10 @@ export default function ServiceDetails({
         message: err.message,
         response: err.response?.data,
         status: err.response?.status,
-        stack: err.stack,
       });
       setError(`Erro ao deletar comentário: ${err.response?.data?.error || "Erro desconhecido"}`);
     } finally {
       setLoading(false);
-      console.log("Finalizando handleDeleteComment, loading definido como false.");
     }
   };
 
@@ -390,7 +432,6 @@ export default function ServiceDetails({
     setFormData({ ...formData, name: subcomment.text });
     setEditingComment({ id: subcomment.id, text: subcomment.text, isSubcomment: true });
     setIsEditModalOpen(true);
-    console.log("Modal de edição aberto para subcomentário:", subcomment.id);
   };
 
   const handleDeleteSubcomment = async (subcommentId: number) => {
@@ -401,12 +442,23 @@ export default function ServiceDetails({
       return;
     }
 
+    const apiConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     try {
       setLoading(true);
-      console.log(`Enviando requisição para deletar subcomentário em https://tensoportunidades.com.br:8080/subcomments/${subcommentId}...`);
-      const response = await api.delete(`/subcomments/${subcommentId}`, {
-        data: { userId: user?.id },
-      }); 
+      console.log(`Enviando requisição DELETE para https://tensoportunidades.com.br:8080/subcomments/${subcommentId}`);
+      const response = await api.delete(
+        `/subcomments/${subcommentId}`,
+        {
+          ...apiConfig,
+          data: { "userId": user?.id },
+        }
+      );
       console.log(`Subcomentário deletado com sucesso em https://tensoportunidades.com.br:8080/subcomments/${subcommentId}:`, {
         status: response.status,
       });
@@ -416,12 +468,10 @@ export default function ServiceDetails({
         message: err.message,
         response: err.response?.data,
         status: err.response?.status,
-        stack: err.stack,
       });
       setError(`Erro ao deletar subcomentário: ${err.response?.data?.error || "Erro desconhecido"}`);
     } finally {
       setLoading(false);
-      console.log("Finalizando handleDeleteSubcomment, loading definido como false.");
     }
   };
 
@@ -439,18 +489,25 @@ export default function ServiceDetails({
       return;
     }
 
+    const apiConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     try {
       setLoading(true);
-      const url = `/comments/${editingComment.id}`;
-      console.log(`Enviando requisição para editar comentário em https://tensoportunidades.com.br:8080${url}...`);
-      const response = await api.put(url, { text: formData.name }); 
-      console.log(`Comentário editado com sucesso em https://tensoportunidades.com.br:8080${url}:`, {
+      console.log(`Enviando requisição PUT para https://tensoportunidades.com.br:8080/comments/${editingComment.id}`);
+      const response = await api.put(
+        `/comments/${editingComment.id}`,
+        { "text": formData.name },
+        apiConfig
+      );
+      console.log(`Comentário editado com sucesso em https://tensoportunidades.com.br:8080/comments/${editingComment.id}:`, {
         status: response.status,
         data: response.data,
       });
-      if (response.status !== 200) {
-        throw new Error(`Erro inesperado do servidor: ${response.status}`);
-      }
       await fetchServiceDetails(service!.id);
       closeEditModal();
     } catch (err: any) {
@@ -458,12 +515,10 @@ export default function ServiceDetails({
         message: err.message,
         response: err.response?.data,
         status: err.response?.status,
-        stack: err.stack,
       });
       setError(`Erro ao editar comentário: ${err.response?.data?.error || err.message}`);
     } finally {
       setLoading(false);
-      console.log("Finalizando handleSaveCommentEdit, loading definido como false.");
     }
   };
 
@@ -481,18 +536,25 @@ export default function ServiceDetails({
       return;
     }
 
+    const apiConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     try {
       setLoading(true);
-      const url = `/subcomments/${editingComment.id}`;
-      console.log(`Enviando requisição para editar subcomentário em https://tensoportunidades.com.br:8080${url}...`);
-      const response = await api.put(url, { text: formData.name }); // withCredentials: true
-      console.log(`Subcomentário editado com sucesso em https://tensoportunidades.com.br:8080${url}:`, {
+      console.log(`Enviando requisição PUT para https://tensoportunidades.com.br:8080/subcomments/${editingComment.id}`);
+      const response = await api.put(
+        `/subcomments/${editingComment.id}`,
+        { "text": formData.name },
+        apiConfig
+      );
+      console.log(`Subcomentário editado com sucesso em https://tensoportunidades.com.br:8080/subcomments/${editingComment.id}:`, {
         status: response.status,
         data: response.data,
       });
-      if (response.status !== 200) {
-        throw new Error(`Erro inesperado do servidor: ${response.status}`);
-      }
       await fetchServiceDetails(service!.id);
       closeEditModal();
     } catch (err: any) {
@@ -500,17 +562,113 @@ export default function ServiceDetails({
         message: err.message,
         response: err.response?.data,
         status: err.response?.status,
-        stack: err.stack,
       });
       setError(`Erro ao editar subcomentário: ${err.response?.data?.error || err.message}`);
     } finally {
       setLoading(false);
-      console.log("Finalizando handleSaveSubcommentEdit, loading definido como false.");
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Iniciando handleSubmit para atualizar detalhes do serviço...");
+    if (!token || !service) {
+      console.log("Token ou serviço ausente, não é possível atualizar detalhes.");
+      alert("Você precisa estar logado para atualizar os detalhes do serviço.");
+      return;
+    }
+
+    if (formData.files.length === 0) {
+      console.log("Nenhum arquivo selecionado para upload.");
+      setError("Selecione pelo menos uma imagem para atualizar os detalhes do serviço.");
+      return;
+    }
+
+    const apiConfig = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      setLoading(true);
+      const formDataToSend = new FormData();
+      formDataToSend.append("description", formData.description || service.description);
+      formData.files.forEach((file) => formDataToSend.append("file", file));
+
+      console.log(`Enviando requisição PUT para https://tensoportunidades.com.br:8080/services/${service.id}/details`);
+      const response = await api.put(
+        `/services/${service.id}/details`,
+        formDataToSend,
+        apiConfig
+      );
+      console.log(`Detalhes do serviço atualizados com sucesso em https://tensoportunidades.com.br:8080/services/${service.id}/details:`, {
+        status: response.status,
+        data: response.data,
+      });
+      await fetchServiceDetails(service.id);
+      closeEditModal();
+    } catch (err: any) {
+      console.error(`Erro ao atualizar detalhes em https://tensoportunidades.com.br:8080/services/${service.id}/details:`, {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+      });
+      setError(`Erro ao atualizar os detalhes do serviço: ${err.response?.data?.error || err.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteService = async () => {
+    console.log("Iniciando handleDeleteService...");
+    if (!token) {
+      console.log("Token ausente, não é possível deletar serviço.");
+      alert("Você precisa estar logado para deletar o serviço.");
+      return;
+    }
+
+    if (!service?.id) {
+      console.log("ID do serviço não disponível.");
+      setError("ID do serviço não disponível.");
+      return;
+    }
+
+    const apiConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    try {
+      setLoading(true);
+      console.log(`Enviando requisição DELETE para https://tensoportunidades.com.br:8080/services/${service.id}`);
+      const response = await api.delete(`/services/${service.id}`, apiConfig);
+      console.log(`Serviço deletado com sucesso em https://tensoportunidades.com.br:8080/services/${service.id}:`, {
+        status: response.status,
+        data: response.data,
+      });
+
+      if (response.status === 204) {
+        console.log("Redirecionando para a página de serviços: /services");
+        router.push("/services");
+      }
+    } catch (err: any) {
+      console.error(`Erro ao deletar serviço em https://tensoportunidades.com.br:8080/services/${service.id}:`, {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+      });
+      setError(`Erro ao deletar o serviço: ${err.response?.data?.error || err.message}`);
+    } finally {
+      setLoading(false);
+      setIsDeleteModalOpen(false);
     }
   };
 
   const renderStars = (rating: number, isUserRating: boolean = false) => {
-    console.log("Renderizando estrelas para rating:", rating, "isUserRating:", isUserRating);
     const stars = [];
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
@@ -536,7 +694,6 @@ export default function ServiceDetails({
   };
 
   const openEditModal = () => {
-    console.log("Abrindo modal de edição...");
     if (token) {
       setIsEditModalOpen(true);
     } else {
@@ -545,7 +702,6 @@ export default function ServiceDetails({
   };
 
   const closeEditModal = () => {
-    console.log("Fechando modal de edição...");
     setIsEditModalOpen(false);
     setFormData({ name: service?.name || "", description: service?.description || "", files: [] });
     setEditingComment(null);
@@ -553,28 +709,23 @@ export default function ServiceDetails({
   };
 
   const openPhotosModal = () => {
-    console.log("Abrindo modal de fotos...");
     setIsPhotosModalOpen(true);
   };
 
   const closePhotosModal = () => {
-    console.log("Fechando modal de fotos...");
     setIsPhotosModalOpen(false);
   };
 
   const nextPhoto = () => {
-    console.log("Navegando para a próxima foto...");
     setCurrentPhotoIndex((prev) => (prev < serviceDetails.length - 1 ? prev + 1 : 0));
   };
 
   const prevPhoto = () => {
-    console.log("Navegando para a foto anterior...");
     setCurrentPhotoIndex((prev) => (prev > 0 ? prev - 1 : serviceDetails.length - 1));
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    console.log(`Atualizando campo de formulário: ${name} para ${value}`);
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -582,142 +733,38 @@ export default function ServiceDetails({
     const files = e.target.files;
     if (files && files.length > 0) {
       const limitedFiles = Array.from(files).slice(0, 10);
-      console.log("Arquivos selecionados para upload:", limitedFiles.map((file) => file.name));
       setFormData((prev) => ({ ...prev, files: limitedFiles }));
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Iniciando handleSubmit para atualizar detalhes do serviço...");
-    if (!token || !service) {
-      console.log("Token ou serviço ausente, não é possível atualizar detalhes.");
-      alert("Você precisa estar logado para atualizar os detalhes do serviço.");
-      return;
-    }
-
-    if (formData.files.length === 0) {
-      console.log("Nenhum arquivo selecionado para upload.");
-      setError("Selecione pelo menos uma imagem para atualizar os detalhes do serviço.");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const formDataToSend = new FormData();
-      formDataToSend.append("description", formData.description || service.description);
-      formData.files.forEach((file) => formDataToSend.append("file", file));
-
-      console.log(`Enviando atualização de detalhes para https://tensoportunidades.com.br:8080/services/${service.id}/details...`);
-      const response = await api.put(`/services/${service.id}/details`, formDataToSend, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }); // withCredentials: true
-      console.log(`Detalhes do serviço atualizados com sucesso em https://tensoportunidades.com.br:8080/services/${service.id}/details:`, {
-        status: response.status,
-        data: response.data,
-      });
-
-      await fetchServiceDetails(service.id);
-      closeEditModal();
-    } catch (err: any) {
-      console.error(`Erro ao atualizar detalhes em https://tensoportunidades.com.br:8080/services/${service.id}/details:`, {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status,
-        stack: err.stack,
-      });
-      setError(`Erro ao atualizar os detalhes do serviço: ${err.response?.data?.error || err.message}`);
-    } finally {
-      setLoading(false);
-      console.log("Finalizando handleSubmit, loading definido como false.");
-    }
-  };
-
-  const handleDeleteService = async () => {
-    console.log("Iniciando handleDeleteService...");
-    if (!token) {
-      console.log("Token ausente, não é possível deletar serviço.");
-      alert("Você precisa estar logado para deletar o serviço.");
-      return;
-    }
-
-    if (!service?.id) {
-      console.log("ID do serviço não disponível.");
-      setError("ID do serviço não disponível.");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      console.log(`Enviando requisição para deletar serviço em https://tensoportunidades.com.br:8080/services/${service.id}...`);
-      const response = await api.delete(`/services/${service.id}`); // withCredentials: true
-      console.log(`Serviço deletado com sucesso em https://tensoportunidades.com.br:8080/services/${service.id}:`, {
-        status: response.status,
-        data: response.data,
-      });
-
-      if (response.status === 204) {
-        console.log("Redirecionando para a página de serviços: /services");
-        router.push("/services");
-      } else {
-        throw new Error("Resposta inesperada do servidor ao deletar o serviço.");
-      }
-    } catch (err: any) {
-      console.error(`Erro ao deletar serviço em https://tensoportunidades.com.br:8080/services/${service.id}:`, {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status,
-        stack: err.stack,
-      });
-      setError(`Erro ao deletar o serviço: ${err.response?.data?.error || err.message}`);
-    } finally {
-      setLoading(false);
-      setIsDeleteModalOpen(false);
-      console.log("Finalizando handleDeleteService, loading definido como false.");
-    }
-  };
-
   const handleWhatsAppClick = () => {
-    console.log("Clicado no botão de WhatsApp...");
     if (service?.provider.analfabeto) {
-      console.log("Provedor é analfabeto, abrindo modal de aviso...");
       setIsAnalfabetoModalOpen(true);
     } else {
-      console.log("Provedor não é analfabeto, enviando mensagem diretamente...");
       sendWhatsAppMessage();
     }
   };
 
   const sendWhatsAppMessage = () => {
-    console.log("Iniciando sendWhatsAppMessage...");
     if (!service?.provider.number) {
-      console.log("Número do provedor não disponível.");
       setError("Erro: Número do provedor não disponível.");
       return;
     }
 
     const providerNumber = formatWhatsAppNumber(service.provider.number);
-    console.log("Número do provedor formatado para WhatsApp:", providerNumber);
-
     if (!providerNumber.match(/^\+\d{10,15}$/)) {
-      console.log("Número de telefone inválido para WhatsApp:", providerNumber);
       setError("Número de telefone inválido para envio no WhatsApp.");
       return;
     }
 
-    console.log("Abrindo WhatsApp com mensagem...");
     window.open(
       `https://wa.me/${providerNumber}?text=${encodeURIComponent("Olá, gostaria de contratar o seu serviço.")}`,
       "_blank"
     );
     setIsAnalfabetoModalOpen(false);
-    console.log("Modal de analfabeto fechado (se aberto).");
   };
 
   if (!service) {
-    console.log("Serviço não encontrado, renderizando mensagem de erro.");
     return <div>Serviço não encontrado.</div>;
   }
 
@@ -735,10 +782,7 @@ export default function ServiceDetails({
               height={400}
               quality={100}
               className={styles.photo}
-              onError={(e) => {
-                console.log(`Erro ao carregar imagem principal do serviço ${service.id}:`, serviceDetails[0].photoUrl);
-                (e.target as HTMLImageElement).src = "/placeholder.webp";
-              }}
+              onError={(e) => (e.target as HTMLImageElement).src = "/placeholder.webp"}
             />
           )}
         </div>
@@ -753,10 +797,7 @@ export default function ServiceDetails({
                 height={200}
                 quality={100}
                 className={styles.smallPhoto}
-                onError={(e) => {
-                  console.log(`Erro ao carregar imagem pequena ${index + 2} do serviço ${service.id}:`, detail.photoUrl);
-                  (e.target as HTMLImageElement).src = "/placeholder.webp";
-                }}
+                onError={(e) => (e.target as HTMLImageElement).src = "/placeholder.webp"}
               />
             ))}
           </div>
@@ -770,24 +811,15 @@ export default function ServiceDetails({
                 height={200}
                 quality={100}
                 className={styles.smallPhoto}
-                onError={(e) => {
-                  console.log(`Erro ao carregar imagem pequena ${index + 4} do serviço ${service.id}:`, detail.photoUrl);
-                  (e.target as HTMLImageElement).src = "/placeholder.webp";
-                }}
+                onError={(e) => (e.target as HTMLImageElement).src = "/placeholder.webp"}
               />
             ))}
             {serviceDetails.length > 4 && (
               <div
                 className={styles.buttonBox}
                 onClick={openPhotosModal}
-                onMouseOver={() => {
-                  console.log("Mouse sobre botão de mais fotos, mostrando tooltip...");
-                  setShowTooltip(true);
-                }}
-                onMouseOut={() => {
-                  console.log("Mouse fora do botão de mais fotos, escondendo tooltip...");
-                  setShowTooltip(false);
-                }}
+                onMouseOver={() => setShowTooltip(true)}
+                onMouseOut={() => setShowTooltip(false)}
               >
                 <button className={styles.morePhotosButton}>
                   +{showTooltip && <span className={styles.tooltip}>Ver todas as imagens</span>}
@@ -833,10 +865,7 @@ export default function ServiceDetails({
             </button>
             <button
               className={styles.deleteButton}
-              onClick={() => {
-                console.log("Abrindo modal de exclusão de serviço...");
-                setIsDeleteModalOpen(true);
-              }}
+              onClick={() => setIsDeleteModalOpen(true)}
             >
               <Trash2 size={20} color="red" />
             </button>
@@ -867,10 +896,7 @@ export default function ServiceDetails({
           <form onSubmit={handleCommentSubmit} className={styles.commentForm}>
             <textarea
               value={newComment}
-              onChange={(e) => {
-                console.log("Atualizando texto do novo comentário:", e.target.value);
-                setNewComment(e.target.value);
-              }}
+              onChange={(e) => setNewComment(e.target.value)}
               placeholder="Escreva seu comentário..."
               className={styles.commentInput}
               disabled={!token}
@@ -1037,10 +1063,7 @@ export default function ServiceDetails({
       )}
 
       {isDeleteModalOpen && (
-        <div className={styles.modalOverlay} onClick={() => {
-          console.log("Fechando modal de exclusão...");
-          setIsDeleteModalOpen(false);
-        }}>
+        <div className={styles.modalOverlay} onClick={() => setIsDeleteModalOpen(false)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <h2>Confirmação de Exclusão</h2>
             <p>Você deseja apagar este serviço?</p>
@@ -1050,10 +1073,7 @@ export default function ServiceDetails({
               </button>
               <button
                 className={styles.cancelButton}
-                onClick={() => {
-                  console.log("Cancelando exclusão de serviço...");
-                  setIsDeleteModalOpen(false);
-                }}
+                onClick={() => setIsDeleteModalOpen(false)}
               >
                 Não
               </button>
@@ -1079,10 +1099,7 @@ export default function ServiceDetails({
                     height={400}
                     quality={100}
                     className={styles.carouselPhoto}
-                    onError={(e) => {
-                      console.log(`Erro ao carregar imagem do carrossel ${currentPhotoIndex + 1} do serviço ${service.id}:`, serviceDetails[currentPhotoIndex].photoUrl);
-                      (e.target as HTMLImageElement).src = "/placeholder.webp";
-                    }}
+                    onError={(e) => (e.target as HTMLImageElement).src = "/placeholder.webp"}
                   />
                 )}
               </div>
@@ -1101,10 +1118,7 @@ export default function ServiceDetails({
       )}
 
       {isAnalfabetoModalOpen && (
-        <div className={styles.modalOverlay} onClick={() => {
-          console.log("Fechando modal de analfabeto...");
-          setIsAnalfabetoModalOpen(false);
-        }}>
+        <div className={styles.modalOverlay} onClick={() => setIsAnalfabetoModalOpen(false)}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <h2>Atenção</h2>
             <p>
@@ -1117,10 +1131,7 @@ export default function ServiceDetails({
               </button>
               <button
                 className={styles.cancelButton}
-                onClick={() => {
-                  console.log("Cancelando envio de mensagem pelo WhatsApp...");
-                  setIsAnalfabetoModalOpen(false);
-                }}
+                onClick={() => setIsAnalfabetoModalOpen(false)}
               >
                 Cancelar
               </button>
@@ -1133,9 +1144,7 @@ export default function ServiceDetails({
 }
 
 const formatWhatsAppNumber = (number: string) => {
-  console.log("Formatando número para WhatsApp:", number);
   const cleanedNumber = number.replace(/[^\d]/g, "");
   const formattedNumber = cleanedNumber.startsWith("+") ? cleanedNumber : `+55${cleanedNumber}`;
-  console.log("Número formatado:", formattedNumber);
   return formattedNumber;
 };
