@@ -112,7 +112,7 @@ const ServiceDetailPage: NextPage<{ searchParams: Promise<{ serviceId?: string }
 
   try {
     console.log(`Buscando serviço com ID ${serviceId} em https://tensoportunidades.com.br:8080/services/${serviceId}...`);
-    const serviceResponse = await api.get(`/services/${serviceId}`); // withCredentials: true envia o cookie
+    const serviceResponse = await api.get(`/services/${serviceId}`); 
 
     console.log(`Serviço encontrado com sucesso em https://tensoportunidades.com.br:8080/services/${serviceId}:`, {
       status: serviceResponse.status,

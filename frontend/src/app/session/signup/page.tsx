@@ -1,10 +1,10 @@
 'use client';
 
-import SignupForm from './components';
+import SignForm from './components';
 import styles from './page.module.scss';
 import { useState } from 'react';
 
-export default function SignupPage() {
+export default function SignPage() {
   const [showWelcomeBox, setShowWelcomeBox] = useState(false);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
@@ -24,22 +24,22 @@ export default function SignupPage() {
   };
 
   return (
-    <section className={styles.signupPage}>
+    <section className={styles.telaDeLogin}>
       <div
-        className={styles.signupBoxWrapper}
+        className={styles.loginBoxWrapper}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <div className={styles.signupBox}>
-          <h1 className={styles.signupTitle}>Crie Sua Conta</h1>
-          <SignupForm />
+        <div className={styles.loginBox}>
+          <h1 className={styles.loginTitle}>Login</h1>
+          <SignForm />
         </div>
         <div
           className={`${styles.welcomeBox} ${showWelcomeBox ? styles.welcomeBoxVisible : ''}`}
         >
-          <h2 className={styles.welcomeTitle}>Bem-vindo ao TENS!</h2>
+          <h2 className={styles.welcomeTitle}>Bem-vindo de Volta!</h2>
           <p className={styles.welcomeText}>
-            Junte-se à comunidade de Tapiramutá e comece a oferecer ou encontrar serviços.
+            Conecte-se com TENS para encontrar ou oferecer serviços em Tapiramutá.
           </p>
         </div>
       </div>

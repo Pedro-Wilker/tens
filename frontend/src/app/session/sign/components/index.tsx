@@ -8,7 +8,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { loginUser } from '../../teste';
+import { loginUser } from '../../auth';
 import { ActionResponse } from '@/types/user-types';
 
 export default function SignForm() {

@@ -11,13 +11,19 @@ export interface ActionResponse {
 export async function loginUser(formData: FormData): Promise<ActionResponse> {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
-  console.log(email, password);
+
   if (!email || !password) {
     return { success: false, message: "Por favor, preencha todos os campos." };
   }
 
   try {
-    const response = await api.post("/session", { email, password });
+    const response = await api.post("/session", { "email": email, "password": password },
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
     console.log("Requisição de login enviada para https://tensoportunidades.com.br:8080/session", {
       status: response.status,
       data: response.data,
@@ -27,7 +33,7 @@ export async function loginUser(formData: FormData): Promise<ActionResponse> {
       return { success: false, message: "E-mail ou senha incorretos." };
     }
 
-    const expressTime = 30 * 24 * 60 * 60 * 1000; 
+    const expressTime = 30 * 24 * 60 * 60 * 1000;
     const cookieStore = await cookies();
 
     const existingSessions = cookieStore.getAll().filter((c) => c.name === "session");
@@ -39,9 +45,9 @@ export async function loginUser(formData: FormData): Promise<ActionResponse> {
     cookieStore.set("session", response.data.token, {
       maxAge: expressTime,
       path: "/",
-      httpOnly: true, 
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax", 
+      //httpOnly: true, 
+      //sameSite: "lax", 
     });
 
     console.log("Cookie de sessão definido com sucesso para:", email);
@@ -72,7 +78,13 @@ export async function registerUser(formData: FormData): Promise<ActionResponse> 
       email,
       number,
     });
-    const response = await api.post("/users", { name, email, password, number });
+    const response = await api.post("/users", { "name": name, "email":email, "password": password, "number":number },
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
     console.log("Resposta do backend ao registrar:", {
       status: response.status,
       data: response.data,

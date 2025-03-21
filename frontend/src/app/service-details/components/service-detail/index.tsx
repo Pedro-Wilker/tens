@@ -357,7 +357,7 @@ export default function ServiceDetails({
       console.log(`Enviando requisição para deletar comentário em https://tensoportunidades.com.br:8080/comments/${commentId}...`);
       const response = await api.delete(`/comments/${commentId}`, {
         data: { userId: user?.id },
-      }); // withCredentials: true
+      }); 
       console.log(`Comentário deletado com sucesso em https://tensoportunidades.com.br:8080/comments/${commentId}:`, {
         status: response.status,
       });
@@ -406,7 +406,7 @@ export default function ServiceDetails({
       console.log(`Enviando requisição para deletar subcomentário em https://tensoportunidades.com.br:8080/subcomments/${subcommentId}...`);
       const response = await api.delete(`/subcomments/${subcommentId}`, {
         data: { userId: user?.id },
-      }); // withCredentials: true
+      }); 
       console.log(`Subcomentário deletado com sucesso em https://tensoportunidades.com.br:8080/subcomments/${subcommentId}:`, {
         status: response.status,
       });
@@ -443,7 +443,7 @@ export default function ServiceDetails({
       setLoading(true);
       const url = `/comments/${editingComment.id}`;
       console.log(`Enviando requisição para editar comentário em https://tensoportunidades.com.br:8080${url}...`);
-      const response = await api.put(url, { text: formData.name }); // withCredentials: true
+      const response = await api.put(url, { text: formData.name }); 
       console.log(`Comentário editado com sucesso em https://tensoportunidades.com.br:8080${url}:`, {
         status: response.status,
         data: response.data,

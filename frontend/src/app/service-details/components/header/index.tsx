@@ -5,9 +5,9 @@ import styles from "./styles.module.scss";
 import Image from "next/image";
 import logoImg from "/public/logo_sfundo.png";
 import { LogOutIcon, UserIcon, Menu } from "lucide-react";
-import { deleteCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
 import { useRouter, usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { api } from "@/services/api";
 
 interface User {
@@ -43,7 +43,7 @@ interface Service {
 
 export function Header() {
   const router = useRouter();
-  const pathname = usePathname(); 
+  const pathname = usePathname();
   const [user, setUser] = useState<User | null>(null);
   const [isProviderModalOpen, setIsProviderModalOpen] = useState(false);
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
@@ -51,34 +51,46 @@ export function Header() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchUser = async () => {
+  const getAuthHeaders = () => {
+    const token = getCookie("session");
+    return {
+      "Content-Type": "application/json",
+      ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+    };
+  };
+
+  const fetchUser = useCallback(async () => {
     try {
-      const response = await api.get("/detailuser"); 
-      console.log("Dados do usuário buscados com sucesso de https://tensoportunidades.com.br:8080/detailuser:", {
+      const response = await api.get("/detailuser", {
+        headers: getAuthHeaders(),
+      });
+      console.log("Dados do usuário buscados com sucesso:", {
         status: response.status,
         data: response.data,
       });
       setUser(response.data);
     } catch (error: any) {
-      console.error("Erro ao buscar dados do usuário em https://tensoportunidades.com.br:8080/detailuser:", {
+      console.error("Erro ao buscar dados do usuário:", {
         message: error.message,
         response: error.response?.data,
         status: error.response?.status,
       });
       setUser(null);
     }
-  };
+  }, []);
 
   const fetchUserServices = async () => {
     try {
-      const response = await api.get("/listdetailuser"); 
-      console.log("Dados completos do usuário buscados com sucesso de https://tensoportunidades.com.br:8080/listdetailuser:", {
+      const response = await api.get("/listdetailuser", {
+        headers: getAuthHeaders(),
+      });
+      console.log("Dados completos do usuário buscados com sucesso:", {
         status: response.status,
         data: response.data,
       });
       setUser(response.data);
     } catch (error: any) {
-      console.error("Erro ao buscar serviços do usuário em https://tensoportunidades.com.br:8080/listdetailuser:", {
+      console.error("Erro ao buscar serviços do usuário:", {
         message: error.message,
         response: error.response?.data,
         status: error.response?.status,
@@ -89,8 +101,13 @@ export function Header() {
 
   useEffect(() => {
     console.log("Iniciando verificação de usuário no Header...");
-    fetchUser();
-  }, [pathname]); 
+    const token = getCookie("session");
+    if (token) {
+      fetchUser();
+    } else {
+      setUser(null);
+    }
+  }, [pathname, fetchUser]);
 
   const normalizeImageUrl = (photoUrl: string): string => {
     if (!photoUrl || photoUrl.trim() === "") return "/placeholder.webp";
@@ -102,8 +119,12 @@ export function Header() {
   async function handleBecomeProvider() {
     try {
       if (!user?.id) throw new Error("ID do usuário não encontrado");
-      const response = await api.post("/createrole", { roleSelection: "PROVIDER", userId: user.id });
-      console.log("Solicitação de provedor enviada com sucesso para https://tensoportunidades.com.br:8080/createrole:", {
+      const response = await api.post(
+        "/createrole",
+        { roleSelection: "PROVIDER", userId: user.id },
+        { headers: getAuthHeaders() }
+      );
+      console.log("Solicitação de provedor enviada com sucesso:", {
         status: response.status,
         data: response.data,
       });
@@ -113,7 +134,7 @@ export function Header() {
         setIsClientModalOpen(false);
       }, 1500);
     } catch (error: any) {
-      console.error("Erro ao processar solicitação de provedor em https://tensoportunidades.com.br:8080/createrole:", {
+      console.error("Erro ao processar solicitação de provedor:", {
         message: error.message,
         response: error.response?.data,
         status: error.response?.status,
@@ -130,7 +151,10 @@ export function Header() {
 
   const handleServiceClick = (service: Service) => router.push(`/service-details/${service.id}`);
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleMenu = () => {
+    console.log("Menu toggled, isMenuOpen:", !isMenuOpen);
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <header className={styles.headerContainer}>
@@ -140,33 +164,41 @@ export function Header() {
         </Link>
 
         {user ? (
-          <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}>
-            {user.role === "ADMIN" || user.role === "SUPPORT" ? (
-              <>
-                <Link href="/dashboard">Painel Admin</Link>
-                <Link href="/userdetail" className={styles.profileLink}>
-                  <span className={styles.profileBox}><UserIcon size={20} color="#ffde00" /></span>
-                </Link>
-                <form action={handleLogout}><button type="submit"><LogOutIcon size={24} color="#ffde00" /></button></form>
-              </>
-            ) : user.role === "PROVIDER" ? (
-              <>
-                <Link href="#" onClick={(e) => { e.preventDefault(); setIsProviderModalOpen(true); fetchUserServices(); }}>Meus Serviços</Link>
-                <Link href="/userdetail" className={styles.profileLink}>
-                  <span className={styles.profileBox}><UserIcon size={20} color="#ffde00" /></span>
-                </Link>
-                <form action={handleLogout}><button type="submit"><LogOutIcon size={24} color="#ffde00" /></button></form>
-              </>
-            ) : user.role === "CLIENT" || user.role === "PROVIDERAWAIT" ? (
-              <>
-                <Link href="#" onClick={(e) => { e.preventDefault(); setIsClientModalOpen(true); }}>Seja TENS</Link>
-                <Link href="/userdetail" className={styles.profileLink}>
-                  <span className={styles.profileBox}><UserIcon size={20} color="#ffde00" /></span>
-                </Link>
-                <form action={handleLogout}><button type="submit"><LogOutIcon size={24} color="#ffde00" /></button></form>
-              </>
-            ) : null}
-          </nav>
+          <div className={styles.headerActions}>
+            <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}>
+              {user.role === "ADMIN" || user.role === "SUPPORT" ? (
+                <>
+                  <Link href="/dashboard">Painel Admin</Link>
+                  <Link href="/services">Serviços</Link>
+                  <Link href="/userdetail" className={styles.profileLink}>
+                    <span className={styles.profileBox}><UserIcon size={20} color="#ffde00" /></span>
+                  </Link>
+                  <form action={handleLogout}><button type="submit"><LogOutIcon size={24} color="#ffde00" /></button></form>
+                </>
+              ) : user.role === "PROVIDER" ? (
+                <>
+                  <Link href="#" onClick={(e) => { e.preventDefault(); setIsProviderModalOpen(true); fetchUserServices(); }}>Meus Serviços</Link>
+                  <Link href="/services">Serviços</Link>
+                  <Link href="/userdetail" className={styles.profileLink}>
+                    <span className={styles.profileBox}><UserIcon size={20} color="#ffde00" /></span>
+                  </Link>
+                  <form action={handleLogout}><button type="submit"><LogOutIcon size={24} color="#ffde00" /></button></form>
+                </>
+              ) : user.role === "CLIENT" || user.role === "PROVIDERAWAIT" ? (
+                <>
+                  <Link href="#" onClick={(e) => { e.preventDefault(); setIsClientModalOpen(true); }}>Seja TENS</Link>
+                  <Link href="/services">Serviços</Link>
+                  <Link href="/userdetail" className={styles.profileLink}>
+                    <span className={styles.profileBox}><UserIcon size={20} color="#ffde00" /></span>
+                  </Link>
+                  <form action={handleLogout}><button type="submit"><LogOutIcon size={24} color="#ffde00" /></button></form>
+                </>
+              ) : null}
+            </nav>
+            <button className={styles.hamburger} onClick={toggleMenu} aria-label="Toggle menu">
+              <Menu size={24} color="#ffde00" />
+            </button>
+          </div>
         ) : (
           <div className={styles.headerActions}>
             <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}>
@@ -175,7 +207,9 @@ export function Header() {
               <Link href="/services">Serviços</Link>
             </nav>
             <Link href="/session/sign" className={styles.login}><UserIcon size={20} color="#ffde00" /> Entrar</Link>
-            <button className={styles.hamburger} onClick={toggleMenu} aria-label="Toggle menu"><Menu size={24} color="#ffde00" /></button>
+            <button className={styles.hamburger} onClick={toggleMenu} aria-label="Toggle menu">
+              <Menu size={24} color="#ffde00" />
+            </button>
           </div>
         )}
       </div>

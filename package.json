@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "next": "^15.2.3"
+  },
+  "devDependencies": {
+    "babel-preset-next": "^1.4.0"
+  }
+}

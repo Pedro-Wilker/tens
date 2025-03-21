@@ -9,6 +9,7 @@ $x-large-screen: 1280px;
   height: 5rem;
   width: 100%;
   position: relative;
+  z-index: 1000;
 }
 
 .headerContent {
@@ -114,6 +115,11 @@ $x-large-screen: 1280px;
         transform: scale(1.2);
         cursor: pointer;
       }
+
+      svg {
+        width: 24px;
+        height: 24px;
+      }
     }
   }
 }
@@ -158,6 +164,7 @@ $x-large-screen: 1280px;
 
   .headerContent {
     height: 4rem;
+    position: relative;
 
     .logo {
       width: 100px;
@@ -167,13 +174,14 @@ $x-large-screen: 1280px;
     .nav {
       display: none;
       position: absolute;
-      top: 4rem;
+      top: 100%;
       left: 0;
       right: 0;
       background-color: #35047f;
       flex-direction: column;
       gap: 20px;
-      padding: 20px;
+      padding: 20px 16px;
+      z-index: 999;
 
       &.navOpen {
         display: flex;
@@ -181,6 +189,15 @@ $x-large-screen: 1280px;
 
       a {
         font-size: 20px;
+        width: 100%;
+        text-align: center;
+      }
+
+      button {
+        margin-left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
       }
 
       .profileBox {
@@ -203,6 +220,8 @@ $x-large-screen: 1280px;
 
       .hamburger {
         display: block;
+        padding: 0;
+        margin: 0;
       }
     }
   }
@@ -231,6 +250,13 @@ $x-large-screen: 1280px;
     .headerActions {
       .login {
         font-size: 16px;
+      }
+
+      .hamburger {
+        svg {
+          width: 20px;
+          height: 20px;
+        }
       }
     }
   }

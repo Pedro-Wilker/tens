@@ -4,16 +4,14 @@ import { useState } from 'react';
 import styles from '../page.module.scss';
 import Person from '@mui/icons-material/Person';
 import Lock from '@mui/icons-material/Lock';
-import Email from '@mui/icons-material/Email';
-import { Phone } from '@mui/icons-material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { registerUser } from '../../teste';
+import { loginUser } from '../../auth';
 import { ActionResponse } from '@/types/user-types';
 
-export default function SignupForm() {
+export default function SignForm() {
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const router = useRouter();
@@ -24,14 +22,14 @@ export default function SignupForm() {
 
   const handleSubmit = async (formData: FormData) => {
     try {
-      const result: ActionResponse = await registerUser(formData);
+      const result: ActionResponse = await loginUser(formData);
       if (result.success) {
-        router.push('/session/sign');
+        router.push('/services');
       } else {
-        setError(result.message || 'Erro ao registrar usuário. Tente novamente.');
+        setError(result.message || 'Erro ao fazer login. Tente novamente.');
       }
     } catch (err: any) {
-      setError(err.message || 'Erro ao registrar usuário. Tente novamente.');
+      setError(err.message || 'Erro ao fazer login. Tente novamente.');
     }
   };
 
@@ -43,32 +41,10 @@ export default function SignupForm() {
           <Person className={styles.userIcon} />
           <input
             required
-            type="text"
-            name="name"
-            placeholder="USUÁRIO"
-            className={styles.inputField}
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <Email className={styles.emailIcon} />
-          <input
-            required
             type="email"
             name="email"
-            placeholder="EMAIL"
             className={styles.inputField}
-          />
-        </div>
-        <div className={styles.inputGroup}>
-          <Phone className={styles.phoneIcon} />
-          <input
-            required
-            type="tel"
-            name="number"
-            placeholder="TELEFONE"
-            className={styles.inputField}
-            pattern="\d{10,11}"
-            title="O número deve ter 10 ou 11 dígitos."
+            placeholder="Digite um email"
           />
         </div>
         <div className={styles.inputGroup}>
@@ -77,19 +53,19 @@ export default function SignupForm() {
             required
             type={showPassword ? 'text' : 'password'}
             name="password"
-            placeholder="SENHA"
             className={styles.inputField}
+            placeholder="Senha de acesso"
           />
           <span onClick={togglePasswordVisibility} className={styles.eyeIcon}>
             {showPassword ? <VisibilityOff /> : <Visibility />}
           </span>
         </div>
-        <button type="submit" className={styles.signupButton}>
-          <b>Criar</b>
+        <button type="submit" className={styles.loginButton}>
+          <b>Entrar</b>
         </button>
       </form>
-      <div className={styles.loginLink}>
-        Já possui login? <Link href="/session/sign">Login</Link>
+      <div className={styles.signupLink}>
+        Não faz parte de TENS ainda? <Link href="/session/signup">Venha se cadastrar</Link>
       </div>
     </>
   );
